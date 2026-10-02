@@ -1,0 +1,815 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>حجوزات المطعم</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            padding: 40px 20px;
+
+            background-color: #f7f1e8;
+
+            font-family: Arial, sans-serif;
+
+            color: #3b2116;
+        }
+
+
+        .container {
+
+            max-width: 1100px;
+
+            margin: auto;
+
+            background-color: #fffaf3;
+
+            padding: 30px;
+
+            border-radius: 15px;
+
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+
+        h1 {
+
+            text-align: center;
+
+            color: #5a2d1a;
+
+            margin-bottom: 30px;
+        }
+
+
+        .table-container {
+
+            overflow-x: auto;
+        }
+
+
+        table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 950px;
+        }
+
+
+        th {
+
+            background-color: #a0522d;
+
+            color: white;
+
+            padding: 14px;
+        }
+
+
+        td {
+
+            padding: 12px;
+
+            text-align: center;
+
+            border-bottom: 1px solid #e5d8c8;
+        }
+
+
+        tr:hover {
+
+            background-color: #f5eadc;
+        }
+
+
+        .actions {
+
+            display: flex;
+
+            gap: 8px;
+
+            justify-content: center;
+        }
+
+
+        button {
+
+            border: none;
+
+            color: white;
+
+            padding: 8px 14px;
+
+            border-radius: 6px;
+
+            cursor: pointer;
+        }
+
+
+        .delete-button {
+
+            background-color: #c0392b;
+        }
+
+
+        .delete-button:hover {
+
+            background-color: #962d22;
+        }
+
+
+        .edit-button {
+
+            background-color: #a0522d;
+        }
+
+
+        .edit-button:hover {
+
+            background-color: #7d3f22;
+        }
+
+
+        .empty {
+
+            text-align: center;
+
+            padding: 30px;
+
+            color: #777;
+        }
+
+
+        /* نافذة التعديل */
+
+        .edit-box {
+
+            display: none;
+
+            position: fixed;
+
+            inset: 0;
+
+            background-color: rgba(0, 0, 0, 0.45);
+
+            justify-content: center;
+
+            align-items: center;
+
+            padding: 20px;
+        }
+
+
+        .edit-form {
+
+            width: 100%;
+
+            max-width: 500px;
+
+            background-color: #fffaf3;
+
+            padding: 30px;
+
+            border-radius: 15px;
+        }
+
+
+        .edit-form h2 {
+
+            margin-top: 0;
+
+            color: #5a2d1a;
+
+            text-align: center;
+        }
+
+
+        .edit-form label {
+
+            display: block;
+
+            margin-top: 12px;
+
+            margin-bottom: 5px;
+        }
+
+
+        .edit-form input,
+
+        .edit-form textarea {
+
+            width: 100%;
+
+            padding: 10px;
+
+            border: 1px solid #d6c8b8;
+
+            border-radius: 6px;
+
+            font-size: 15px;
+        }
+
+
+        .edit-form textarea {
+
+            min-height: 80px;
+
+            resize: vertical;
+        }
+
+
+        .edit-actions {
+
+            display: flex;
+
+            gap: 10px;
+
+            margin-top: 20px;
+        }
+
+
+        .save-button {
+
+            flex: 1;
+
+            background-color: #a0522d;
+        }
+
+
+        .cancel-button {
+
+            flex: 1;
+
+            background-color: #777;
+        }
+
+
+        @media (max-width: 600px) {
+
+            body {
+
+                padding: 20px 10px;
+            }
+
+
+            .container {
+
+                padding: 20px 10px;
+            }
+
+
+            h1 {
+
+                font-size: 24px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <div class="container">
+
+
+        <h1>📋 حجوزات المطعم</h1>
+
+
+        <div class="table-container">
+
+
+            {% if bookings %}
+
+
+            <table>
+
+
+                <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+
+                        <th>الاسم</th>
+
+                        <th>الأشخاص</th>
+
+                        <th>التاريخ</th>
+
+                        <th>الوقت</th>
+
+                        <th>الهاتف</th>
+
+                        <th>الملاحظات</th>
+
+                        <th>الإجراءات</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                    {% for booking in bookings %}
+
+
+                    <tr>
+
+
+                        <td>{{ booking[0] }}</td>
+
+                        <td>{{ booking[1] }}</td>
+
+                        <td>{{ booking[2] }}</td>
+
+                        <td>{{ booking[3] }}</td>
+
+                        <td>{{ booking[4] }}</td>
+
+                        <td>{{ booking[5] }}</td>
+
+                        <td>{{ booking[6] }}</td>
+
+
+                        <td>
+
+                            <div class="actions">
+
+
+                                <button
+                                    class="edit-button"
+                                    data-id="{{ booking[0] }}"
+                                    data-name="{{ booking[1] }}"
+                                    data-people="{{ booking[2] }}"
+                                    data-date="{{ booking[3] }}"
+                                    data-time="{{ booking[4] }}"
+                                    data-phone="{{ booking[5] }}"
+                                    data-notes="{{ booking[6] or '' }}"
+                                >
+                                    ✏️ تعديل
+                                </button>
+
+
+                                <button
+                                    class="delete-button"
+                                    data-id="{{ booking[0] }}"
+                                >
+                                    🗑️ حذف
+                                </button>
+
+
+                            </div>
+
+                        </td>
+
+
+                    </tr>
+
+
+                    {% endfor %}
+
+
+                </tbody>
+
+
+            </table>
+
+
+            {% else %}
+
+
+            <div class="empty">
+
+                لا توجد حجوزات حالياً.
+
+            </div>
+
+
+            {% endif %}
+
+
+        </div>
+
+
+    </div>
+
+
+    <!-- نافذة التعديل -->
+
+
+    <div class="edit-box" id="editBox">
+
+
+        <div class="edit-form">
+
+
+            <h2>✏️ تعديل الحجز</h2>
+
+
+            <label>الاسم</label>
+
+            <input
+                id="editName"
+                type="text"
+            >
+
+
+            <label>عدد الأشخاص</label>
+
+            <input
+                id="editPeople"
+                type="number"
+                min="1"
+            >
+
+
+            <label>التاريخ</label>
+
+            <input
+                id="editDate"
+                type="date"
+            >
+
+
+            <label>الوقت</label>
+
+            <input
+                id="editTime"
+                type="time"
+            >
+
+
+            <label>رقم الهاتف</label>
+
+            <input
+                id="editPhone"
+                type="tel"
+            >
+
+
+            <label>الملاحظات</label>
+
+            <textarea id="editNotes"></textarea>
+
+
+            <div class="edit-actions">
+
+
+                <button
+                    class="save-button"
+                    id="saveEditButton"
+                >
+                    💾 حفظ التعديل
+                </button>
+
+
+                <button
+                    class="cancel-button"
+                    id="cancelEditButton"
+                >
+                    إلغاء
+                </button>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+    <script>
+
+
+        /* =========================
+           حذف الحجز
+        ========================= */
+
+
+        const deleteButtons =
+            document.querySelectorAll(".delete-button");
+
+
+        deleteButtons.forEach(function (button) {
+
+
+            button.addEventListener("click", async function () {
+
+
+                const bookingId =
+                    this.dataset.id;
+
+
+                const confirmed =
+                    confirm(
+                        "هل أنت متأكد من حذف هذا الحجز؟"
+                    );
+
+
+                if (!confirmed) {
+
+                    return;
+
+                }
+
+
+                try {
+
+
+                    const response =
+                        await fetch(
+                            `/delete-booking/${bookingId}`,
+                            {
+                                method: "POST"
+                            }
+                        );
+
+
+                    if (!response.ok) {
+
+                        throw new Error(
+                            "حدث خطأ أثناء الحذف"
+                        );
+
+                    }
+
+
+                    this
+                        .closest("tr")
+                        .remove();
+
+
+                    alert(
+                        "تم حذف الحجز بنجاح"
+                    );
+
+
+                }
+
+
+                catch (error) {
+
+
+                    console.error(error);
+
+
+                    alert(
+                        "تعذر حذف الحجز"
+                    );
+
+                }
+
+            });
+
+        });
+
+
+
+        /* =========================
+           تعديل الحجز
+        ========================= */
+
+
+        const editButtons =
+            document.querySelectorAll(".edit-button");
+
+
+        const editBox =
+            document.getElementById("editBox");
+
+
+        const editName =
+            document.getElementById("editName");
+
+
+        const editPeople =
+            document.getElementById("editPeople");
+
+
+        const editDate =
+            document.getElementById("editDate");
+
+
+        const editTime =
+            document.getElementById("editTime");
+
+
+        const editPhone =
+            document.getElementById("editPhone");
+
+
+        const editNotes =
+            document.getElementById("editNotes");
+
+
+        const saveEditButton =
+            document.getElementById("saveEditButton");
+
+
+        const cancelEditButton =
+            document.getElementById("cancelEditButton");
+
+
+        let currentBookingId = null;
+
+
+        editButtons.forEach(function (button) {
+
+
+            button.addEventListener("click", function () {
+
+
+                currentBookingId =
+                    this.dataset.id;
+
+
+                editName.value =
+                    this.dataset.name;
+
+
+                editPeople.value =
+                    this.dataset.people;
+
+
+                editDate.value =
+                    this.dataset.date;
+
+
+                editTime.value =
+                    this.dataset.time;
+
+
+                editPhone.value =
+                    this.dataset.phone;
+
+
+                editNotes.value =
+                    this.dataset.notes;
+
+
+                editBox.style.display =
+                    "flex";
+
+            });
+
+        });
+
+
+        cancelEditButton.addEventListener(
+            "click",
+            function () {
+
+                editBox.style.display =
+                    "none";
+
+            }
+        );
+
+
+        saveEditButton.addEventListener(
+            "click",
+            async function () {
+
+
+                const updatedData = {
+
+                    name:
+                        editName.value.trim(),
+
+                    people:
+                        editPeople.value,
+
+                    date:
+                        editDate.value,
+
+                    time:
+                        editTime.value,
+
+                    phone:
+                        editPhone.value.trim(),
+
+                    notes:
+                        editNotes.value.trim()
+
+                };
+
+
+                if (!updatedData.name) {
+
+                    alert(
+                        "المرجو إدخال الاسم"
+                    );
+
+                    return;
+
+                }
+
+
+                if (
+                    !updatedData.people ||
+                    updatedData.people < 1
+                ) {
+
+                    alert(
+                        "المرجو إدخال عدد الأشخاص"
+                    );
+
+                    return;
+
+                }
+
+
+                try {
+
+
+                    const response =
+                        await fetch(
+                            `/edit-booking/${currentBookingId}`,
+                            {
+                                method: "PUT",
+
+                                headers: {
+                                    "Content-Type":
+                                        "application/json"
+                                },
+
+                                body:
+                                    JSON.stringify(
+                                        updatedData
+                                    )
+                            }
+                        );
+
+
+                    if (!response.ok) {
+
+                        throw new Error(
+                            "حدث خطأ أثناء التعديل"
+                        );
+
+                    }
+
+
+                    alert(
+                        "تم تعديل الحجز بنجاح"
+                    );
+
+
+                    editBox.style.display =
+                        "none";
+
+
+                    location.reload();
+
+
+                }
+
+
+                catch (error) {
+
+
+                    console.error(error);
+
+
+                    alert(
+                        "تعذر تعديل الحجز"
+                    );
+
+                }
+
+            }
+        );
+
+
+    </script>
+
+
+</body>
+
+</html>

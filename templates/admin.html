@@ -1,0 +1,328 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>لوحة تحكم المطعم</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            padding: 40px 20px;
+
+            background-color: #f7f1e8;
+
+            font-family: Arial, sans-serif;
+
+            color: #3b2116;
+        }
+
+
+        .container {
+
+            max-width: 1000px;
+
+            margin: auto;
+        }
+
+
+        h1 {
+
+            text-align: center;
+
+            color: #5a2d1a;
+
+            margin-bottom: 30px;
+        }
+
+
+        .stats {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(220px, 1fr));
+
+            gap: 20px;
+
+            margin-bottom: 30px;
+        }
+
+
+        .stat-card {
+
+            background-color: #fffaf3;
+
+            padding: 25px;
+
+            border-radius: 15px;
+
+            text-align: center;
+
+            box-shadow:
+                0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+
+        .stat-card h2 {
+
+            margin: 0;
+
+            color: #a0522d;
+
+            font-size: 35px;
+        }
+
+
+        .stat-card p {
+
+            margin-bottom: 0;
+
+            font-size: 18px;
+        }
+
+
+        .latest {
+
+            background-color: #fffaf3;
+
+            padding: 25px;
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+
+        .latest h2 {
+
+            color: #5a2d1a;
+        }
+
+
+        table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            margin-top: 20px;
+        }
+
+
+        th {
+
+            background-color: #a0522d;
+
+            color: white;
+
+            padding: 12px;
+        }
+
+
+        td {
+
+            padding: 10px;
+
+            text-align: center;
+
+            border-bottom:
+                1px solid #e5d8c8;
+        }
+
+
+        .button {
+
+            display: inline-block;
+
+            margin-top: 20px;
+
+            padding: 12px 20px;
+
+            background-color: #a0522d;
+
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 8px;
+        }
+
+
+        .button:hover {
+
+            background-color: #7d3f22;
+        }
+
+
+        .empty {
+
+            text-align: center;
+
+            padding: 20px;
+
+            color: #777;
+        }
+
+
+        @media (max-width: 600px) {
+
+            body {
+
+                padding: 20px 10px;
+            }
+
+
+            .latest {
+
+                padding: 15px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <div class="container">
+
+
+        <h1>👨‍💼 لوحة تحكم مطعم الذوق المغربي</h1>
+
+
+        <div class="stats">
+
+
+            <div class="stat-card">
+
+                <h2>
+                    {{ total_bookings }}
+                </h2>
+
+                <p>
+                    📋 إجمالي الحجوزات
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="latest">
+
+
+            <h2>
+                📅 آخر الحجوزات
+            </h2>
+
+
+            {% if latest_bookings %}
+
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>الاسم</th>
+
+                        <th>الأشخاص</th>
+
+                        <th>التاريخ</th>
+
+                        <th>الوقت</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                    {% for booking in latest_bookings %}
+
+
+                    <tr>
+
+                        <td>
+                            {{ booking[1] }}
+                        </td>
+
+                        <td>
+                            {{ booking[2] }}
+                        </td>
+
+                        <td>
+                            {{ booking[3] }}
+                        </td>
+
+                        <td>
+                            {{ booking[4] }}
+                        </td>
+
+                    </tr>
+
+
+                    {% endfor %}
+
+
+                </tbody>
+
+            </table>
+
+
+            {% else %}
+
+
+            <div class="empty">
+
+                لا توجد حجوزات حالياً.
+
+            </div>
+
+
+            {% endif %}
+
+
+            <a
+                href="/bookings"
+                class="button"
+            >
+                📋 إدارة جميع الحجوزات
+            </a>
+
+
+        </div>
+
+
+    </div>
+
+
+</body>
+
+</html>

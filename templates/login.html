@@ -1,0 +1,217 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>تسجيل الدخول</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            min-height: 100vh;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            background-color: #f7f1e8;
+
+            font-family: Arial, sans-serif;
+        }
+
+
+        .login-box {
+
+            width: 100%;
+
+            max-width: 400px;
+
+            padding: 35px;
+
+            background-color: #fffaf3;
+
+            border-radius: 18px;
+
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, 0.10);
+        }
+
+
+        h1 {
+
+            text-align: center;
+
+            color: #5a2d1a;
+
+            margin-bottom: 30px;
+        }
+
+
+        label {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #5a2d1a;
+
+            font-weight: bold;
+        }
+
+
+        input {
+
+            width: 100%;
+
+            padding: 13px;
+
+            margin-bottom: 18px;
+
+            border: 1px solid #d6c8b8;
+
+            border-radius: 8px;
+
+            font-size: 16px;
+        }
+
+
+        input:focus {
+
+            outline: none;
+
+            border-color: #a0522d;
+
+            box-shadow:
+                0 0 0 2px
+                rgba(160, 82, 45, 0.15);
+        }
+
+
+        button {
+
+            width: 100%;
+
+            padding: 13px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background-color: #a0522d;
+
+            color: white;
+
+            font-size: 16px;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+        }
+
+
+        button:hover {
+
+            background-color: #7d3f22;
+        }
+
+
+        .error {
+
+            margin-bottom: 20px;
+
+            padding: 12px;
+
+            background-color: #fdecec;
+
+            color: #a33;
+
+            border-radius: 8px;
+
+            text-align: center;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <div class="login-box">
+
+
+        <h1>🔐 تسجيل دخول المدير</h1>
+
+
+        {% if error %}
+
+            <div class="error">
+
+                {{ error }}
+
+            </div>
+
+        {% endif %}
+
+
+        <form method="POST">
+
+
+            <label>
+                اسم المستخدم
+            </label>
+
+            <input
+                type="text"
+                name="username"
+                placeholder="أدخل اسم المستخدم"
+                required
+            >
+
+
+            <label>
+                كلمة المرور
+            </label>
+
+            <input
+                type="password"
+                name="password"
+                placeholder="أدخل كلمة المرور"
+                required
+            >
+
+
+            <button type="submit">
+                تسجيل الدخول
+            </button>
+
+
+        </form>
+
+
+    </div>
+
+
+</body>
+
+</html>
